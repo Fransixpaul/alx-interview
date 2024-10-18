@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+This module defines a function to generate a pascal's Triangle. 
+"""
+
 def pascal_triangle(n):
     """Returns a list of lists representing Pascal's Triangle of size n."""
     if n <= 0:
