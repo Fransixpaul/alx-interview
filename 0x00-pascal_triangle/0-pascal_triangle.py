@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """
-This module defines a function to generate a pascal's Triangle. 
+This module defines a function to generate a pascal's Triangle.
 """
+
 
 def pascal_triangle(n):
     """Returns a list of lists representing Pascal's Triangle of size n."""
@@ -18,5 +19,4 @@ def pascal_triangle(n):
             new_row.append(prev_row[j - 1] + prev_row[j])
         new_row.append(1)  # End the new row with 1
         triangle.append(new_row)
-
     return triangle
