@@ -4,8 +4,9 @@ This module contains a function to determine if all boxes can be unlocked
 based on the keys found in each box.
 """
 
+
 def canUnlockAll(boxes):
-    n= len(boxes)
+    n = len(boxes)
     unlocked = set([0])
     keys = [0]
 
