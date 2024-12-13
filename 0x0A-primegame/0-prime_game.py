@@ -6,51 +6,42 @@ and its multiples from the set. The player who cannot make a move loses.
 """
 
 
+def sieve_of_eratosthenes(n):
+    """ prime algorithm
+    """
+    primes = [True] * (n + 1)
+    primes[0] = primes[1] = False
+    for i in range(2, int(n**0.5) + 1):
+        if primes[i]:
+            for j in range(i * i, n + 1, i):
+                primes[j] = False
+    return primes
+
+
 def isWinner(x, nums):
+    """ determine winner
     """
-    Determines the winner of x rounds of the game.
-
-    Args:
-        x (int): Number of rounds.
-        nums (list of int): List where each element is the maximum number n.
-
-    Returns:
-        str: Name of the player that won the most rounds (Maria or Ben),
-             or None if the winner cannot be determined.
-    """
-    if x < 1 or not nums:
+    if x <= 0 or not nums:
         return None
 
-    # Find the maximum value in nums
-    max_n = max(nums)
+    max_num = max(nums)
+    primes = sieve_of_eratosthenes(max_num)
+    prime_count = [0] * (max_num + 1)
 
-    # Precompute primes using the Sieve of Eratosthenes
-    is_prime = [True] * (max_n + 1)
-    is_prime[0] = is_prime[1] = False  # 0 and 1 are not prime numbers
-    for i in range(2, int(max_n**0.5) + 1):
-        if is_prime[i]:
-            for j in range(i * i, max_n + 1, i):
-                is_prime[j] = False
+    # Precompute the number of primes up to each index
+    for i in range(1, max_num + 1):
+        prime_count[i] = prime_count[i - 1] + (1 if primes[i] else 0)
 
-    # Precompute winners for each possible n
-    winner_for_n = {}
-    for n in range(1, max_n + 1):
-        primes = [i for i in range(1, n + 1) if is_prime[i]]
-        maria_turn = True
-        while primes:
-            # Maria or Ben picks a prime and removes its multiples
-            prime = primes[0]
-            primes = [num for num in primes if num % prime != 0]
-            maria_turn = not maria_turn  # Switch turns
+    maria_wins = 0
+    ben_wins = 0
 
-        # Determine winner for this n
-        winner_for_n[n] = "Ben" if maria_turn else "Maria"
+    for n in nums:
+        # Maria wins if the number of primes up to n is odd, otherwise Ben wins
+        if prime_count[n] % 2 == 1:
+            maria_wins += 1
+        else:
+            ben_wins += 1
 
-    # Count wins for Maria and Ben
-    maria_wins = sum(1 for n in nums if winner_for_n[n] == "Maria")
-    ben_wins = x - maria_wins
-
-    # Determine the overall winner
     if maria_wins > ben_wins:
         return "Maria"
     elif ben_wins > maria_wins:
